@@ -24,7 +24,7 @@ export type INavLink = {
   
   export type INewPost = {
     userId: string;
-    Update: string;
+    Update?: string;
     Good?: string;
     Bad?: string;
     tags?: string;
@@ -55,7 +55,7 @@ export type INavLink = {
 
   export type ICustomMedia = {
     userId: string;
-    Status: string;
+    Status?: string;
     statusUrl: URL;
     file?: File[];
   };
