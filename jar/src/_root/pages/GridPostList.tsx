@@ -2,6 +2,7 @@ import PostStats from "@/components/shared/PostStats";
 import { useUserContext } from "@/context/AuthContext"
 import { Card } from "@nextui-org/card";
 import { Link } from "react-router-dom";
+import { Models } from "appwrite";
 
 type GridPostListProps = {
   posts: Models.Document[];

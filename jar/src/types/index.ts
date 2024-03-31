@@ -34,7 +34,7 @@ export type INavLink = {
   
   export type IUpdatePost = {
     postId: string;
-    Update: string;
+    Update?: string;
     Good?: string;
     Bad?: string;
     tags?: string;
