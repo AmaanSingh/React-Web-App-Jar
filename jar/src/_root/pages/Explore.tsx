@@ -31,10 +31,11 @@ const Explore = () => {
   const debouncedValue = useDebounce(searchValue, 500);
 
   const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(searchValue)
-
+  
   useEffect(() => {
     if(inView && !searchValue) fetchNextPage();
   }, [inView, searchValue])
+  
 
   if(!posts) {
     return(
@@ -43,6 +44,7 @@ const Explore = () => {
       </div>
     )
   }
+  
   const shouldShowSearchResults = searchValue !== '';
   const shouldShowPosts = !shouldShowSearchResults && posts.pages.every((item) => item.documents.length == 0)
   

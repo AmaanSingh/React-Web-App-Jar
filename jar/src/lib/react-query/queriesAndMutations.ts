@@ -147,6 +147,7 @@ export const useDeletePost = () => {
     })
 }
 
+
 export const useGetPosts = () => {
     return useInfiniteQuery({
         queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
@@ -157,11 +158,13 @@ export const useGetPosts = () => {
             const lastId = lastPage?.documents[lastPage?.documents.length - 1].$id;
 
             return lastId;
-        }
+        },
+        initialPageParam: undefined
     })
 
     
 }
+
   
 export const useSearchPosts = (searchTerm: string) => {
     return useQuery({
