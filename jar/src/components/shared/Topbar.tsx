@@ -18,9 +18,10 @@ const Topbar = () => {
       <div className="flex-between py-4 px-5">
         <Link to="/" className="flex gap-3 items-center">
           <img 
-            src="/assets/react.svg"
+            src="/assets/react.svg" width={50} height={50}
             alt="logo"
           />
+          <h1>Jar of Thoughts</h1>
         </Link>
 
         <div className="flex gap-4">

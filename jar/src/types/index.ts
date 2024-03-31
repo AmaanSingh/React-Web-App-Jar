@@ -24,22 +24,25 @@ export type INavLink = {
   
   export type INewPost = {
     userId: string;
-    caption: string;
-    file: File[];
-    location?: string;
+    Update: string;
+    Good?: string;
+    Bad?: string;
     tags?: string;
+    Status?: string;
+    statusUrl?: string;
   };
   
   export type IUpdatePost = {
     postId: string;
-    caption: string;
-    imageId: string;
-    imageUrl: URL;
-    file: File[];
-    location?: string;
+    Update: string;
+    Good?: string;
+    Bad?: string;
     tags?: string;
+    Status?: string;
+    statusUrl?: string;
   };
   
+  /*
   export type IUser = {
     id: string;
     name: string;
@@ -48,10 +51,29 @@ export type INavLink = {
     imageUrl: string;
     bio: string;
   };
-  
+  */
+
+  export type ICustomMedia = {
+    userId: string;
+    Status: string;
+    statusUrl: URL;
+    file?: File[];
+  };
+
   export type INewUser = {
     name: string;
     email: string;
     username: string;
     password: string;
+  };
+
+  export type IUser = {
+    id: string;
+    name: string;
+    username: string;
+    email: string;
+    imageUrl: string;
+    bio: string;
+    Status: string;
+    statusUrl: string;
   };

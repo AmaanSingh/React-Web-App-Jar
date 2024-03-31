@@ -1,5 +1,7 @@
 import { bottombarLinks } from '@/constants';
 import { Link, useLocation } from 'react-router-dom'
+import { Dialog, DialogTrigger } from '../ui/dialog';
+import UpdateStatus from './UpdateStatus';
 
 const Bottombar = () => {
 
@@ -16,6 +18,17 @@ const Bottombar = () => {
                           </Link>
                     )
                 })}
+                <Dialog >
+                    <DialogTrigger>
+                    <li key="Status">
+                    <div className="flex-center flex-col gap-1 p-2 transition">
+                        <img src="/assets/icons/bookmark.svg" width={16} height={16} alt="Status" className={`group-hover:invert-white`} />
+                        <p className='tiny-medium text-light-2'>Status</p>
+                    </div>  
+                    </li>
+                    </DialogTrigger>
+                    <UpdateStatus />
+                </Dialog>
     </section>
   )
 }

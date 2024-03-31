@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
+import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -26,14 +27,35 @@ import {
     DialogTrigger,
   } from "@/components/ui/dialog"
 import { useState } from "react"
-  
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-})
+import { PostValidation } from "@/lib/validation"
+import { Models } from "appwrite"
+import { useUserContext } from "@/context/AuthContext"
+import { useToast } from "../ui/use-toast"
+import { useCreatePost, useUpdatePost } from "@/lib/react-query/queriesAndMutations"
+import Loader from "../shared/Loader"
 
-const PostForm = () => {
+type PostFormProps = {
+  post?: Models.Document;
+  action: 'Create' | 'Update';
+}
+
+const PostForm = ({post, action}: PostFormProps) => {
+  const { mutateAsync: createPost, isPending: isLoadingCreate } = useCreatePost();
+  const { mutateAsync: updatePost, isPending: isLoadingUpdate } = useUpdatePost();
+  const { user } = useUserContext();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const form = useForm<z.infer<typeof PostValidation>>({
+    resolver: zodResolver(PostValidation),
+    defaultValues: {
+      Update: post ? post?.Update: "",
+      Good: post ? post?.Good: "",
+      Bad: post ? post?.Bad : "",
+      tags: post ? post.tags.join(',') : ''
+    },
+  })
+
     const [isFormFieldVisible, setIsFormFieldVisible] = useState(false);
     const [isFormFieldVisible_bad, setIsFormFieldVisible_bad] = useState(false);
 
@@ -45,20 +67,38 @@ const PostForm = () => {
     const handleButtonClick_bad = () => {
         setIsFormFieldVisible_bad(!isFormFieldVisible_bad); // Toggle the visibility state
     };
-    
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-          username: "",
-        },
-    })
+
      
       // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof PostValidation>) {
+        if(post && action === 'Update'){
+          const updatedPost = await updatePost({
+            ...values,
+            postId: post.$id,
+          })
+          console.log("update");
+          if(!updatedPost){
+            toast({
+              title: 'Please try again'
+            })
+          }
+          return navigate(`/posts/${post.$id}`)
+        }
+
+        const newPost = await createPost({
+          ...values,
+          userId: user.id,
+        })
+        if(!newPost){
+          toast({
+            title: 'Please try again'
+          })
+        }
+        console.log("create")
+        navigate('/');
+
     }
+
     return (
     <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-9 w-full max-w-5xl">
@@ -138,7 +178,7 @@ const PostForm = () => {
         <Dialog>
         <DialogTrigger asChild>
         <Button variant="outline" className="shad-button_dark_4_add w-14 h-14 rounded-full">
-            <img src="assets/icons/plus.svg" width={30} alt="add"/>
+            <img src="/assets/icons/plus.svg" width={30} alt="add"/>
         </Button>
         </DialogTrigger>
       <DialogContent className="shad-dialogue w-96 sm:max-w-[425px]">
@@ -172,7 +212,10 @@ const PostForm = () => {
     </div>
     <div className="flex gap-4 items-center justify-end mt-20">
         <Button type="button" className="shad-button_dark_4">Cancel</Button>
-        <Button type="submit" className="shad-button_primary whitespace-nowrap">Submit</Button>
+        <Button type="submit" className="shad-button_primary whitespace-nowrap" disabled={isLoadingCreate || isLoadingUpdate}>{isLoadingCreate || isLoadingUpdate
+        && <Loader />}
+        {action} Post
+        </Button>
     </div>
 
       </form>
