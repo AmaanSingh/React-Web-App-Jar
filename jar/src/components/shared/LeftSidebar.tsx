@@ -21,7 +21,7 @@ const LeftSidebar = () => {
 
   const { mutate: signOut, isSuccess } = useSignOutAccount();
   const navigate = useNavigate();
-  const { user} = useUserContext();
+  const { user } = useUserContext();
   const { data: posts, isPending: isPostLoading, isError: isErrorPosts } = useGetRecentPosts();
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const LeftSidebar = () => {
             </ul>
 
         </div>
-        <Button variant="ghost" className="shad-button_ghost" onClick={() => signOut}>
+        <Button variant="ghost" className="shad-button_ghost" onClick={() => signOut()}>
             <img src="/assets/icons/logout.svg" alt="logout" />
             <p className="small-medium lg:base-medium">Logout</p>
         </Button>
