@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input'
 import { useState, useEffect  } from 'react'
-import SearchResults from './SearchResults';
+//import SearchResults from './SearchResults';
 import GridPostList from './GridPostList';
 import { useGetPosts, useSearchPosts } from '@/lib/react-query/queriesAndMutations';
 import useDebounce from '@/hooks/useDebounce';
